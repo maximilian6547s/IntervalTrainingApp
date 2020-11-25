@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">IntervalTrainingApp</string>
+    <string name="image_name">image</string>
+    <string name="str_start">START</string>
+
+
 </resources>
