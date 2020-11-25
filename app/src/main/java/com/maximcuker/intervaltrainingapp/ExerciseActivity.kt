@@ -18,6 +18,9 @@ class ExerciseActivity : AppCompatActivity() {
     private var exerciseTimerDuration: Long = 30
     private var restTimerDuration: Long = 10
 
+    private var exerciseList:ArrayList<ExerciseModel>? = null
+    private var currentExercisePosition = -1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,9 @@ class ExerciseActivity : AppCompatActivity() {
         }
 
         setupRestView()
+        exerciseList = Constants.defaultExerciseList()
+
+
     }
 
     override fun onDestroy() {
@@ -53,6 +59,7 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
+                currentExercisePosition++
                 setupExerciseView()
             }
         }.start()
