@@ -35,8 +35,8 @@ class ExerciseActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        setupRestView()
         exerciseList = Constants.defaultExerciseList()
+        setupRestView()
 
 
     }
@@ -74,7 +74,12 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                setupRestView()
+//                if (currentExercisePosition< (exerciseList?.size ?: 0)-1 ) {
+                if (currentExercisePosition<1) {
+                    setupRestView()
+                } else {
+                    Toast.makeText(this@ExerciseActivity,"Congratulations! You have completed the 7 minutes workout!", Toast.LENGTH_LONG).show()
+                }
             }
         }.start()
     }
@@ -87,7 +92,11 @@ class ExerciseActivity : AppCompatActivity() {
             restTimer?.cancel()
             restProgress = 0
         }
+
+        tvUpcomingExerciseName.text = exerciseList?.get(currentExercisePosition + 1)?.name
+
         setRestProgressBar()
+
     }
 
     private fun setupExerciseView(){
@@ -99,5 +108,10 @@ class ExerciseActivity : AppCompatActivity() {
             exerciseProgress = 0
         }
         setExerciseProgressBar()
+
+        ivImage.setImageResource(exerciseList?.get(currentExercisePosition)?.image ?: R.drawable.ic_jumping_jacks)
+        tvExerciseName.text = exerciseList?.get(currentExercisePosition)?.name
+
+
     }
 }
