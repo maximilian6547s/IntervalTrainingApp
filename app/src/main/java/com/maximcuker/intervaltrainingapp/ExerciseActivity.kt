@@ -1,5 +1,6 @@
 package com.maximcuker.intervaltrainingapp
 
+import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,8 +22,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress = 0
 
-    private var exerciseTimerDuration: Long = 3
-    private var restTimerDuration: Long = 2
+    private var exerciseTimerDuration: Long = 3//TODO: make back after test
+    private var restTimerDuration: Long = 2//TODO: make back after test
 
     private var exerciseList: ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
@@ -123,18 +124,16 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
-                if (currentExercisePosition< (exerciseList?.size ?: 0)-1 ) {
-//                if (currentExercisePosition < 1) {
+//                if (currentExercisePosition< (exerciseList?.size ?: 0)-1 ) { //TODO: make back after test
+                if (currentExercisePosition < 2) {
                     exerciseList?.get(currentExercisePosition)?.isSelected = false
                     exerciseList?.get(currentExercisePosition)?.isCompleted = true
                     exerciseAdapter?.notifyDataSetChanged()
                     setupRestView()
                 } else {
-                    Toast.makeText(
-                        this@ExerciseActivity,
-                        "Congratulations! You have completed the 7 minutes workout!",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    finish()
+                    val intentFinish = Intent(this@ExerciseActivity,FinishActivity::class.java)
+                    startActivity(intentFinish)
                 }
             }
         }.start()
