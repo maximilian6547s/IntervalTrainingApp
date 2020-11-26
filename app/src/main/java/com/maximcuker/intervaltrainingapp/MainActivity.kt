@@ -14,5 +14,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ExerciseActivity::class.java)
             startActivity(intent)
         }
+
+        llBMI.setOnClickListener {
+            val intentBMI = Intent(this@MainActivity, BMIActivity::class.java)
+            startActivity(intentBMI)
+        }
     }
 }
