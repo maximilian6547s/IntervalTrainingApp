@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_exercise.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -20,8 +21,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress = 0
 
-    private var exerciseTimerDuration: Long = 30
-    private var restTimerDuration: Long = 10
+    private var exerciseTimerDuration: Long = 3
+    private var restTimerDuration: Long = 2
 
     private var exerciseList: ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
@@ -29,6 +30,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var tts: TextToSpeech? = null
 
     private var player: MediaPlayer? = null
+    private var exerciseAdapter: ExerciseStatusAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +50,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         exerciseList = Constants.defaultExerciseList()
         setupRestView()
-
-
+        setupExerciseStatusRecyclerView()
     }
 
     //Text to speech initialization listener
@@ -104,6 +105,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             override fun onFinish() {
                 currentExercisePosition++
+
+                exerciseList?.get(currentExercisePosition)?.isSelected = true
+                exerciseAdapter?.notifyDataSetChanged()
                 setupExerciseView()
             }
         }.start()
@@ -119,8 +123,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
-//                if (currentExercisePosition< (exerciseList?.size ?: 0)-1 ) {
-                if (currentExercisePosition < 1) {
+                if (currentExercisePosition< (exerciseList?.size ?: 0)-1 ) {
+//                if (currentExercisePosition < 1) {
+                    exerciseList?.get(currentExercisePosition)?.isSelected = false
+                    exerciseList?.get(currentExercisePosition)?.isCompleted = true
+                    exerciseAdapter?.notifyDataSetChanged()
                     setupRestView()
                 } else {
                     Toast.makeText(
@@ -174,7 +181,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             exerciseList?.get(currentExercisePosition)?.image ?: R.drawable.ic_jumping_jacks
         )
         tvExerciseName.text = exerciseList?.get(currentExercisePosition)?.name
+    }
 
-
+    private fun setupExerciseStatusRecyclerView() {
+        rvExerciseStatus.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!,this)
+        rvExerciseStatus.adapter = exerciseAdapter
     }
 }
