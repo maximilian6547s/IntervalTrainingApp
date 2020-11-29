@@ -14,5 +14,6 @@
 
     <color name="colorHighLighted">#C4C4C4</color>
     <color name="color_light_gray">#D5DEE7</color>
+    <color name="color_gray">#9AA2AF</color>
 
 </resources>
