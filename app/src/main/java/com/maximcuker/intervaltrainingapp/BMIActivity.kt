@@ -5,18 +5,25 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_b_m_i.*
-import kotlinx.android.synthetic.main.activity_exercise.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 class BMIActivity : AppCompatActivity() {
+
+    val METRIC_UNITS_VIEW = "METRIC_UNIT_VIEW"
+    val US_UNITS_VIEW = "US_UNIT_VIEW"
+
+    private var currentVisibleView: String =
+        METRIC_UNITS_VIEW // A variable to hold a value to make a selected view visible
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_b_m_i)
 
         setSupportActionBar(toolbarBMIActivity)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "CALCULATE BMI"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) //set back button
+        supportActionBar?.title = "CALCULATE BMI" // Setting a title in the action bar.
         toolbarBMIActivity.setNavigationOnClickListener {
             onBackPressed()
         }
@@ -34,6 +41,47 @@ class BMIActivity : AppCompatActivity() {
                     .show()
             }
         }
+
+        makeVisibleMetricUnitsView()
+        rgUnits.setOnCheckedChangeListener { group, checkedId ->
+            if (checkedId == R.id.rbMetricUnits) {
+                makeVisibleMetricUnitsView()
+            } else {
+                makeVisibleUsUnitsView()
+            }
+        }
+
+    }
+
+    private fun makeVisibleUsUnitsView() {
+
+        currentVisibleView = US_UNITS_VIEW
+        tilMetricUnitHeight.visibility = View.GONE
+        tilMetricUnitWeight.visibility = View.GONE
+
+        etUsUnitHeightFeet.text?.clear()
+        etUsUnitHeightInch.text?.clear()
+        etUsUnitWeight.text?.clear()
+
+        llUsUnitsHeight.visibility = View.VISIBLE
+        tilUsUnitWeight.visibility = View.VISIBLE
+
+        llDisplayBMIResult.visibility = View.INVISIBLE
+    }
+
+    private fun makeVisibleMetricUnitsView() {
+
+        currentVisibleView = METRIC_UNITS_VIEW
+        tilMetricUnitHeight.visibility = View.VISIBLE
+        tilMetricUnitWeight.visibility = View.VISIBLE
+
+        etMetricUnitWeight.text?.clear()
+        etMetricUnitHeight.text?.clear()
+
+        llUsUnitsHeight.visibility = View.GONE
+        tilUsUnitWeight.visibility = View.GONE
+
+        llDisplayBMIResult.visibility = View.INVISIBLE
     }
 
     private fun displayBmiResult(bmi: Float) {
@@ -71,10 +119,13 @@ class BMIActivity : AppCompatActivity() {
             bmiDescription = "OMG! You are in a very dangerous condition! Act now!"
         }
 
+        llDisplayBMIResult.visibility = View.VISIBLE
+/*
         tvYourBMI.visibility = View.VISIBLE
         tvBMIValue.visibility = View.VISIBLE
         tvBMIType.visibility = View.VISIBLE
         tvBMIDescription.visibility = View.VISIBLE
+*/
 
         // This is used to round the result value to 2 decimal values after "."
         val bmiValue = BigDecimal(bmi.toDouble()).setScale(2, RoundingMode.HALF_EVEN).toString()
