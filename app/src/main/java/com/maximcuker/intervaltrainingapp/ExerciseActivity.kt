@@ -24,8 +24,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var exerciseTimer: CountDownTimer? = null
     private var exerciseProgress = 0
 
-    private var exerciseTimerDuration: Long = 1//TODO: make back after test 30
-    private var restTimerDuration: Long = 1//TODO: make back after test 10
+    private var exerciseTimerDuration: Long = 30//TODO: make back after test 30
+    private var restTimerDuration: Long = 10//TODO: make back after test 10
 
     private var exerciseList: ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
@@ -126,8 +126,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
-//                if (currentExercisePosition< (exerciseList?.size ?: 0)-1 ) { //TODO: make back after test
-                if (currentExercisePosition < 2) {
+                if (currentExercisePosition< (exerciseList?.size ?: 0)-1 ) { //TODO: make back after test
+//                if (currentExercisePosition < 2) {
                     exerciseList?.get(currentExercisePosition)?.isSelected = false
                     exerciseList?.get(currentExercisePosition)?.isCompleted = true
                     exerciseAdapter?.notifyDataSetChanged()

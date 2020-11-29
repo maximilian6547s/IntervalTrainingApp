@@ -25,6 +25,19 @@ class SqliteOpenHelper(context:Context, factory:SQLiteDatabase.CursorFactory?):S
         db?.insert(TABLE_HISTORY, null, values)
         db?.close()
     }
+    fun getAllCompletesDatesList():ArrayList<String>{
+        val dates = ArrayList<String>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_HISTORY", null)
+
+        while (cursor.moveToNext()) {
+            val dateValue = (cursor.getString(cursor.getColumnIndex(COLUMN_COMPLETED_DATE)))
+            dates.add(dateValue)
+        }
+        cursor.close()
+        return dates
+    }
+
     companion object {
         private const val DATABASE_VERSION = 1 // This DATABASE Version
         private const val DATABASE_NAME = "SevenMinutesWorkout.db" // Name of the DATABASE
